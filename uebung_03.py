@@ -63,17 +63,23 @@ class Kreis(Figur):
         return f"Kries M = {self.mittelpunkt} r={self.radius}"
     
 #-----------------------------------------------------------------------
-## Funktioniert leider noch nicht...
 class Polygon(Figur):
-    def __init__(self, *ecke):
-        if len(ecke) == 1 and isinstance(ecke[0], (list, tuple)):
-            self.ecke = ecke[0]
-        else:
-            self.ecke = ecke
+    def __init__(self, Punktliste):
         super().__init__("Polygon")
-    
+        self.pl = Punktliste
+
     def __str__(self):
-        return f"Polygon {self.ecke}"
+        s = f"Polygon: "
+        for punkt in self.pl:
+            s = s + f"{punkt} "
+        return s
+    
+    def umfang(self):
+        for i in range(0, len(self.pl)):
+            l1 = self.pl[i]
+            l2 = self.pl[i+1]
+            s = s + l1.distanz(l2)
+        return s
 
 #-----------------------------------------------------------------------
 
@@ -97,5 +103,5 @@ r1 = Rechteck(P1,P2)
 print(r1)
 print(r1.umfang())
 
-p1 = Polygon(P1,P2,P3)
-print(p1)
+p = Polygon[P1,P2,P3,P1]
+print(p)
