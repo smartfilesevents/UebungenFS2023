@@ -1,4 +1,5 @@
 import sys
+import csv
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
@@ -14,11 +15,9 @@ class Fenster(QMainWindow):
         # Widget-Instanzen erstellen:
         self.vornameEdit = QLineEdit()
         self.nameEdit = QLineEdit()
-        self.emailEdit = QLineEdit()
 
         self.geburtstagEdit = QDateEdit()
         self.geburtstagEdit.setDisplayFormat("dd/MM/yyyy")
-        self.geburtstagEdit.setKeyboardTracking(False)
 
         self.adresseEdit = QLineEdit()
         self.postleitzahlEdit = QLineEdit()
@@ -32,7 +31,6 @@ class Fenster(QMainWindow):
         # Layout füllen:
         layout.addRow("Vorname:", self.vornameEdit)
         layout.addRow("Name:", self.nameEdit)
-        layout.addRow("Email:", self.emailEdit)
         layout.addRow("Geburtstag:", self.geburtstagEdit)
         layout.addRow("Adresse :", self.adresseEdit)
         layout.addRow("Postleitzahl:", self.postleitzahlEdit)
@@ -75,7 +73,17 @@ class Fenster(QMainWindow):
     def save_clicked(self):
         vorname = self.vornameEdit.text()
         name = self.nameEdit.text()
+        geburtstag = self.geburtstagEdit.text()
+        adresse = self.adresseEdit.text()
+        postleitzahl = self.postleitzahlEdit.text()
+        ort = self.ortEdit.text()
+        land = self.landEdit.currentText()
 
+        file = open("Kontakte.txt", "w", encoding="utf-8")
+        writer = csv.writer(file, delimiter=',', lineterminator='\n')
+        writer.writerow([vorname, name, geburtstag, adresse, postleitzahl, ort, land])
+
+        file.close()
 
 #----------------------------------------------------------------------------------------
 
