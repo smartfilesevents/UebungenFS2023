@@ -1,51 +1,87 @@
 import sys
+from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-class MyWindow(QMainWindow):
+class Fenster(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        # Fenster-Titel definieren:
-        self.setWindowTitle("GUI-Programierung")
-
-        # Layout erstellen:
-        layout = QFormLayout()
+        self.setWindowTitle("GUI-Programierung") # Fenster-Titel definieren
+#----------------------------------------------------------------------------------------
+#Layout + Attribute
+        layout = QFormLayout() # Layout erstellen
 
         # Widget-Instanzen erstellen:
-        vornameLineEdit = QLineEdit()
-        nameLineEdit = QLineEdit()
-        emailLineEdit = QLineEdit()
-        geburtstagSpinBox = QSpinBox()
-        adresseLineEdit = QLineEdit()
-        postleitzahlLineEdit = QLineEdit()
-        ortLineEdit = QLineEdit()
-        landLineEdit = QComboBox()
+        self.vornameEdit = QLineEdit()
+        self.nameEdit = QLineEdit()
+        self.emailEdit = QLineEdit()
 
-        landLineEdit.addItems(["Schweiz", "Deutschland", "Österreich"])
+        self.geburtstagEdit = QDateEdit()
+        self.geburtstagEdit.setDisplayFormat("dd/MM/yyyy")
+        self.geburtstagEdit.setKeyboardTracking(False)
+
+        self.adresseEdit = QLineEdit()
+        self.postleitzahlEdit = QLineEdit()
+        self.ortEdit = QLineEdit()
+        
+        self.landEdit = QComboBox()
+        self.landEdit.addItems(["Schweiz", "Deutschland", "Österreich"])
+
+        save = QPushButton("Save")
 
         # Layout füllen:
-        layout.addRow("Vorname:", vornameLineEdit)
-        layout.addRow("Name:", nameLineEdit)
-        layout.addRow("Email:", emailLineEdit)
-        layout.addRow("Geburtstag:", geburtstagSpinBox)
-        layout.addRow("Adresse :", adresseLineEdit)
-        layout.addRow("Postleitzahl:", postleitzahlLineEdit)
-        layout.addRow("Ort:", ortLineEdit)
-        layout.addRow("Land:", landLineEdit)
+        layout.addRow("Vorname:", self.vornameEdit)
+        layout.addRow("Name:", self.nameEdit)
+        layout.addRow("Email:", self.emailEdit)
+        layout.addRow("Geburtstag:", self.geburtstagEdit)
+        layout.addRow("Adresse :", self.adresseEdit)
+        layout.addRow("Postleitzahl:", self.postleitzahlEdit)
+        layout.addRow("Ort:", self.ortEdit)
+        layout.addRow("Land:", self.landEdit)
+        layout.addRow(save)
 
         # Zentrales Widget erstellen und layout hinzufügen
         center = QWidget()
         center.setLayout(layout)
 
-        # Zentrales Widget in diesem Fenster setzen
-        self.setCentralWidget(center)
+        self.setCentralWidget(center) # Zentrales Widget in diesem Fenster setzen
+        self.show() # Fenster anzeigen
+#----------------------------------------------------------------------------------------
+#Speichern Teil 1
+        save.clicked.connect(self.save_clicked)
+#----------------------------------------------------------------------------------------
+#File Menue
+        menubar = self.menuBar()
+        menubar.setNativeMenuBar(False)
 
-        # Fenster anzeigen
-        self.show()
+        filemenu = menubar.addMenu("File")
+
+        save = QAction("Save", self)
+        save.triggered.connect(self.save_clicked)
+        quit = QAction("Quit", self)
+        quit.triggered.connect(self.menu_quit)
+
+        # Rolle "beenden" (für MacOS)
+        quit.setMenuRole(QAction.QuitRole)
+
+        filemenu.addAction(save)
+        filemenu.addSeparator()
+        filemenu.addAction(quit)
+
+    def menu_quit(self):
+        self.close()  # Hauptfenster schliessen = beenden!
+#----------------------------------------------------------------------------------------
+#Speichern
+    def save_clicked(self):
+        vorname = self.vornameEdit.text()
+        name = self.nameEdit.text()
+
+
+#----------------------------------------------------------------------------------------
 
 def main():
     app = QApplication(sys.argv)  # Qt Applikation erstellen
-    mainwindow = MyWindow()       # Instanz Fenster erstellen
+    mainwindow = Fenster()       # Instanz Fenster erstellen
     mainwindow.raise_()           # Fenster nach vorne bringen
     app.exec_()                   # Applikations-Loop starten
 
