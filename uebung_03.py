@@ -4,51 +4,52 @@ class Figur:
     def __init__(self, name):
         self.name = "Figur"
 
-        def Umfang(self):
+        def umfang(self):
             return 0
         
         def __str__(self):
             return self.name
-
+#-----------------------------------------------------------------------
 class Punkt(Figur):
     def __init__(self, x, y):
         super().__init__("Punkt")
         self.x = x
         self.y = y
-
+    
+    def distanz(self, other):
+        return ((self.x-other.x)**2+(self.y-other.y)**2)**0.5
+    
     def __str__(self):
         return f"({self.x},{self.y})"
-
+#-----------------------------------------------------------------------
 class Dreieck(Figur):
-    def __init__(self,ecke1,ecke2,ecke3):
+    def __init__(self,A,B,C):
          super().__init__("Dreieck")
-         self.ecke1 = ecke1
-         self.ecke2 = ecke2
-         self.ecke3 = ecke3
+         self.A = A
+         self.B = B
+         self.C = C
 
     def __str__(self):
-        return f"Dreieck {self.ecke1}{self.ecke2}{self.ecke3}"
+        return f"Dreieck {self.A}{self.B}{self.C}"
 
     def umfang(self):
-        return (((self.ecke1.x-self.ecke2.x)**2+(self.ecke1.y-self.ecke2.y)**2)**0.5+
-                ((self.ecke2.x-self.ecke3.x)**2+(self.ecke2.y-self.ecke3.y)**2)**0.5+
-                ((self.ecke3.x-self.ecke1.x)**2+(self.ecke3.y-self.ecke1.y)**2)**0.5)
+        return self.A.distanz(self.B) + self.B.distanz(self.C) + self.C.distanz(self.A)
 
-
+#-----------------------------------------------------------------------
 class Rechteck(Figur):
-    def __init__(self,ecke1,ecke2):
-        self.ecke1 = ecke1
-        self.ecke2 = ecke2
+    def __init__(self,A,B):
+        self.A = A
+        self.B = B
         super().__init__("Rechteck")
 
     def __str__(self):
-        return f"Rechteck {self.ecke1}{self.ecke2}"
+        return f"Rechteck {self.A}{self.B}"
     
     def umfang(self):
-        return (abs(self.ecke1.x-self.ecke2.x)*2+
-                abs(self.ecke1.y-self.ecke2.y)*2)
+        return (abs(self.A.x-self.B.x)*2+
+                abs(self.A.y-self.B.y)*2)
 
-
+#-----------------------------------------------------------------------
 class Kreis(Figur):
     def __init__(self, mittelpunkt, radius):
         super().__init__("Kreis")
@@ -61,7 +62,7 @@ class Kreis(Figur):
     def __str__(self):
         return f"Kries M = {self.mittelpunkt} r={self.radius}"
     
-
+#-----------------------------------------------------------------------
 ## Funktioniert leider noch nicht...
 class Polygon(Figur):
     def __init__(self, *ecke):
@@ -74,7 +75,7 @@ class Polygon(Figur):
     def __str__(self):
         return f"Polygon {self.ecke}"
 
-
+#-----------------------------------------------------------------------
 
 
 
